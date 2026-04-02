@@ -83,6 +83,26 @@ p {
     padding: 1rem 20px;
 }
 
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-brand .logo {
+    height: 65px;
+    width: auto;
+    object-fit: contain;
+    background-color: var(--primary-blue);
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.nav-brand .brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
 .nav-brand h1 {
     font-size: 1.5rem;
     color: var(--primary-blue);
@@ -493,6 +513,14 @@ p {
     color: var(--primary-blue);
 }
 
+.footer-logo {
+    height: 80px;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 1rem;
+    display: block;
+}
+
 .social-links {
     display: flex;
     gap: 1rem;
@@ -597,6 +625,11 @@ p {
 }
 
 @media (max-width: 480px) {
+    .nav-brand .logo {
+        height: 50px;
+        padding: 6px;
+    }
+
     .nav-brand h1 {
         font-size: 1.2rem;
     }
@@ -641,6 +674,10 @@ p {
     .btn {
         padding: 10px 20px;
         font-size: 0.9rem;
+    }
+
+    .footer-logo {
+        height: 60px;
     }
 }
 
