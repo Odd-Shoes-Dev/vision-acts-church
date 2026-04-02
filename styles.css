@@ -216,6 +216,55 @@ p {
 }
 
 /* ========================================
+   HERO BOTTOM NAVIGATION (Mobile App Style)
+   ======================================== */
+
+.hero-bottom-nav {
+    display: none;
+    justify-content: space-around;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem 1rem;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 1rem;
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    text-decoration: none;
+    color: var(--white);
+    flex: 1;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    padding: 0.75rem;
+    font-size: 0.85rem;
+}
+
+.bottom-nav-item i {
+    font-size: 1.8rem;
+    transition: transform 0.3s ease;
+}
+
+.bottom-nav-item span {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    font-size: 0.8rem;
+}
+
+.bottom-nav-item:hover i {
+    transform: scale(1.15);
+}
+
+.bottom-nav-item:hover {
+    opacity: 0.9;
+}
+
+/* ========================================
    BUTTONS
    ======================================== */
 
@@ -691,6 +740,10 @@ p {
 }
 
 @media (max-width: 768px) {
+    body.has-mobile-bottom-nav {
+        padding-bottom: calc(72px + env(safe-area-inset-bottom));
+    }
+
     .navbar {
         position: sticky;
     }
@@ -735,6 +788,35 @@ p {
 
     .quick-action-btn span {
         font-size: 0.85rem;
+    }
+
+    .hero-bottom-nav {
+        display: flex;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1200;
+        margin-top: 0;
+        padding: 0.45rem 0.6rem calc(0.45rem + env(safe-area-inset-bottom));
+        gap: 0.35rem;
+        background: rgba(0, 30, 90, 0.9);
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.22);
+    }
+
+    .bottom-nav-item {
+        gap: 0.15rem;
+        padding: 0.2rem 0.3rem;
+    }
+
+    .bottom-nav-item i {
+        font-size: 1.2rem;
+    }
+
+    .bottom-nav-item span {
+        font-size: 0.62rem;
+        letter-spacing: 0.2px;
     }
 
     h2 {
@@ -790,6 +872,10 @@ p {
 }
 
 @media (max-width: 480px) {
+    body.has-mobile-bottom-nav {
+        padding-bottom: calc(66px + env(safe-area-inset-bottom));
+    }
+
     .nav-brand .logo {
         height: 50px;
         padding: 6px;
@@ -824,6 +910,26 @@ p {
 
     .quick-action-btn span {
         font-size: 0.75rem;
+    }
+
+    .hero-bottom-nav {
+        padding: 0.35rem 0.4rem calc(0.35rem + env(safe-area-inset-bottom));
+        margin-top: 0;
+        gap: 0.15rem;
+    }
+
+    .bottom-nav-item {
+        gap: 0.1rem;
+        padding: 0.15rem 0.2rem;
+    }
+
+    .bottom-nav-item i {
+        font-size: 1.05rem;
+    }
+
+    .bottom-nav-item span {
+        font-size: 0.58rem;
+        letter-spacing: 0.15px;
     }
 
     h2 {
