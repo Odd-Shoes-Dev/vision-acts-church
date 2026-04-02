@@ -51,6 +51,22 @@ let currentBook = null;
 let bibleData = [];
 let bookByName = {};
 
+function cleanVerseText(text) {
+    if (!text) {
+        return '';
+    }
+
+    return text
+        // Remove annotation blocks like {firmament: Heb. expansion}
+        .replace(/\{[^}]*\}/g, '')
+        // Remove trailing shorthand fragments sometimes left from note text
+        .replace(/\s*etc\.\s*$/i, '')
+        // Normalize spacing around punctuation
+        .replace(/\s+([,.;:!?])/g, '$1')
+        .replace(/\s{2,}/g, ' ')
+        .trim();
+}
+
 async function loadBooks() {
     try {
         showLoading('Loading Bible books...');
@@ -176,7 +192,7 @@ function loadPassage(book, chapter, verse) {
 
     const versesToDisplay = chapterVerses.slice(startVerse - 1).map((text, index) => ({
         verse: startVerse + index,
-        text
+        text: cleanVerseText(text)
     }));
 
     displayPassage(book, chapterNumber, versesToDisplay);
