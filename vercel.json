@@ -1,0 +1,25 @@
+{
+  "buildCommand": "",
+  "framework": null,
+  "installCommand": "",
+  "outputDirectory": "",
+  "env": {},
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, s-maxage=3600"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/index.html",
+      "permanent": false
+    }
+  ]
+}
