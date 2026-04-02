@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bible Reader - Vision of Acts Pentecostal Church</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .bible-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .bible-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .bible-header h1 {
+            color: var(--primary-blue);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .bible-header p {
+            color: var(--medium-gray);
+            font-size: 1.1rem;
+        }
+
+        .bible-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .bible-control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .bible-control-group label {
+            font-weight: 600;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+
+        .bible-control-group select,
+        .bible-control-group input {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .bible-control-group select:focus,
+        .bible-control-group input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 68, 204, 0.12);
+        }
+
+        .bible-content {
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 2rem;
+            line-height: 1.9;
+            color: var(--dark-gray);
+        }
+
+        .bible-passage-header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary-blue);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .bible-passage-header h2 {
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .bible-passage-text {
+            font-size: 1.05rem;
+            line-height: 2;
+            color: var(--dark-gray);
+        }
+
+        .bible-verse {
+            margin-bottom: 1rem;
+        }
+
+        .bible-verse-number {
+            color: var(--primary-blue);
+            font-weight: 600;
+            vertical-align: super;
+            font-size: 0.85rem;
+            margin-right: 0.3rem;
+        }
+
+        .loading, .error {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+        }
+
+        .loading {
+            color: var(--primary-blue);
+            background: rgba(0, 68, 204, 0.05);
+        }
+
+        .error {
+            color: #d32f2f;
+            background: rgba(211, 47, 47, 0.05);
+        }
+
+        .bible-nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .bible-nav-buttons button {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bible-nav-buttons button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-prev {
+            background: var(--light-gray);
+            color: var(--dark-gray);
+        }
+
+        .btn-prev:hover:not(:disabled) {
+            background: #e0e0e0;
+        }
+
+        .btn-next {
+            background: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .btn-next:hover:not(:disabled) {
+            background: #003399;
+        }
+
+        @media (max-width: 768px) {
+            .bible-controls {
+                grid-template-columns: 1fr;
+            }
+
+            .bible-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .bible-content {
+                padding: 1.5rem;
+            }
+
+            .bible-passage-text {
+                font-size: 0.95rem;
+                line-height: 1.8;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>VISION OF ACTS</h1>
+                <p class="tagline">Pentecostal Church</p>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#vision">Vision</a></li>
+                <li><a href="index.html#mission">Mission</a></li>
+                <li><a href="index.html#leadership">Leadership</a></li>
+                <li><a href="bible.html">Bible</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Bible Reader -->
+    <div class="bible-container">
+        <div class="bible-header">
+            <h1>Bible Reader</h1>
+            <p>Read God's Word anytime, anywhere</p>
+        </div>
+
+        <div class="bible-controls">
+            <div class="bible-control-group">
+                <label for="bookSelect">Book</label>
+                <select id="bookSelect">
+                    <option value="">Select a book...</option>
+                </select>
+            </div>
+
+            <div class="bible-control-group">
+                <label for="chapterInput">Chapter</label>
+                <input type="number" id="chapterInput" min="1" value="1">
+            </div>
+
+            <div class="bible-control-group">
+                <label for="verseInput">Verse</label>
+                <input type="number" id="verseInput" min="1" value="1">
+            </div>
+        </div>
+
+        <div class="bible-content" id="bibleContent">
+            <div class="loading">
+                Select a book and chapter to begin reading
+            </div>
+        </div>
+
+        <div class="bible-nav-buttons">
+            <button class="btn-prev" id="prevBtn"><i class="fas fa-chevron-left"></i> Previous</button>
+            <button class="btn-next" id="nextBtn">Next <i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>VISION OF ACTS</h4>
+                    <p>Pentecostal Church</p>
+                    <p>Equipping God's people for authentic relationship with Him</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html#vision">Vision</a></li>
+                        <li><a href="index.html#mission">Mission</a></li>
+                        <li><a href="index.html#leadership">Leadership</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/share/1HmNRqcTzq/?mibextid=wwXIfr" target="_blank">Facebook</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Vision of Acts Pentecostal Church. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="bible-reader.js"></script>
+</body>
+</html>
