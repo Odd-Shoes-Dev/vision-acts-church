@@ -86,6 +86,27 @@ if (contactForm) {
     });
 }
 
+// Prayer Form Handling
+const prayerForm = document.querySelector('#prayerForm');
+if (prayerForm) {
+    prayerForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const prayerRequest = this.querySelector('textarea').value;
+        
+        // Simple validation - only prayer request is required
+        if (!prayerRequest || prayerRequest.trim() === '') {
+            alert('Please enter your prayer request');
+            return;
+        }
+        
+        // Success message
+        alert('Thank you for sharing your prayer request. Our church family will be praying with you.');
+        this.reset();
+    });
+}
+
 // ========================================
 // MOBILE MENU TOGGLE (optional enhancement)
 // ========================================
