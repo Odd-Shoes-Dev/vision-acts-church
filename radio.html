@@ -110,10 +110,25 @@
             animation: pulse-btn 1.5s infinite;
         }
 
+        .play-btn.loading {
+            animation: spin 1s linear infinite;
+            opacity: 0.8;
+        }
+
+        .play-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
         @keyframes pulse-btn {
             0% { box-shadow: 0 5px 20px rgba(255, 255, 255, 0.4); }
             50% { box-shadow: 0 5px 30px rgba(255, 255, 255, 0.6); }
             100% { box-shadow: 0 5px 20px rgba(255, 255, 255, 0.4); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .volume-control {

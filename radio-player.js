@@ -3,69 +3,140 @@
 // ========================================
 
 let isPlaying = false;
+let isLoading = false;
 let audioElement = null;
+let loadingTimeout = null;
+
 const ZENO_MAIN_STREAM = 'https://stream.zeno.fm/oq5cxilmz7xvv';
+
+const playBtn = document.getElementById('playBtn');
+const volumeSlider = document.getElementById('volumeSlider');
+
+function setButtonStatePlaying() {
+    if (!playBtn) {
+        return;
+    }
+
+    playBtn.classList.remove('loading');
+    playBtn.classList.add('playing');
+    playBtn.disabled = false;
+    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+}
+
+function setButtonStatePaused() {
+    if (!playBtn) {
+        return;
+    }
+
+    playBtn.classList.remove('loading');
+    playBtn.classList.remove('playing');
+    playBtn.disabled = false;
+    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+}
+
+function setButtonStateLoading() {
+    if (!playBtn) {
+        return;
+    }
+
+    playBtn.classList.remove('playing');
+    playBtn.classList.add('loading');
+    playBtn.disabled = true;
+    playBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+}
+
+function clearLoadingTimeout() {
+    if (loadingTimeout) {
+        clearTimeout(loadingTimeout);
+        loadingTimeout = null;
+    }
+}
+
+function startLoadingTimeout() {
+    clearLoadingTimeout();
+    loadingTimeout = setTimeout(function() {
+        if (!isPlaying) {
+            isLoading = false;
+            setButtonStatePaused();
+            updateNowPlaying('Still Connecting', 'Stream is taking longer than expected. Tap play once to retry.');
+        }
+    }, 12000);
+}
 
 // Initialize audio element and bind to Zeno stream
 function initializePlayer() {
     audioElement = new Audio();
     audioElement.preload = 'none';
     audioElement.volume = 0.7;
-    setStreamUrl(ZENO_MAIN_STREAM);
+    audioElement.src = ZENO_MAIN_STREAM;
+
+    audioElement.addEventListener('waiting', function() {
+        if (!isPlaying) {
+            isLoading = true;
+            setButtonStateLoading();
+            updateNowPlaying('Buffering...', 'Connecting to live stream...');
+            startLoadingTimeout();
+        }
+    });
 
     audioElement.addEventListener('playing', function() {
+        isPlaying = true;
+        isLoading = false;
+        clearLoadingTimeout();
+        setButtonStatePlaying();
         updateNowPlaying('Now Streaming', 'Vision of Acts Radio - live from Zeno');
+    });
+
+    audioElement.addEventListener('pause', function() {
+        if (!isLoading) {
+            isPlaying = false;
+            setButtonStatePaused();
+        }
     });
 
     audioElement.addEventListener('error', function() {
         isPlaying = false;
-        playBtn.classList.remove('playing');
-        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+        isLoading = false;
+        clearLoadingTimeout();
+        setButtonStatePaused();
         updateNowPlaying('Stream Unavailable', 'Could not play stream right now. Please try again.');
     });
 
     updateNowPlaying('Gospel Africa Radio Ready', 'Click play to start live stream');
 }
 
-// Play/Pause functionality
-const playBtn = document.getElementById('playBtn');
-if (playBtn) {
-    playBtn.addEventListener('click', function() {
-        if (isPlaying) {
-            pauseStream();
-        } else {
-            playStream();
-        }
-    });
-}
-
 async function playStream() {
-    if (!audioElement) {
+    if (!audioElement || isLoading) {
         return;
     }
 
+    isLoading = true;
+    setButtonStateLoading();
+    updateNowPlaying('Buffering...', 'Connecting to live stream...');
+    startLoadingTimeout();
+
     try {
         await audioElement.play();
-        isPlaying = true;
-        playBtn.classList.add('playing');
-        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        updateNowPlaying('Buffering...', 'Connecting to live stream...');
     } catch (error) {
         isPlaying = false;
-        playBtn.classList.remove('playing');
-        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+        isLoading = false;
+        clearLoadingTimeout();
+        setButtonStatePaused();
         updateNowPlaying('Playback Blocked', 'Tap play again to allow audio in this browser');
         console.error('Playback error:', error);
     }
 }
 
 function pauseStream() {
+    clearLoadingTimeout();
+    isLoading = false;
+    isPlaying = false;
+
     if (audioElement) {
         audioElement.pause();
     }
-    isPlaying = false;
-    playBtn.classList.remove('playing');
-    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+
+    setButtonStatePaused();
     updateNowPlaying('Paused', 'Click play to resume streaming');
 }
 
@@ -73,59 +144,57 @@ function pauseStream() {
 function updateNowPlaying(title, subtitle) {
     const titleEl = document.getElementById('nowPlayingText');
     const subtitleEl = document.getElementById('programTime');
-    
-    if (titleEl) titleEl.textContent = title;
-    if (subtitleEl) subtitleEl.textContent = subtitle;
-}
 
-// Volume control
-const volumeSlider = document.getElementById('volumeSlider');
-if (volumeSlider) {
-    volumeSlider.addEventListener('change', function() {
-        if (audioElement) {
-            audioElement.volume = this.value / 100;
-        }
-    });
-}
-
-// Set initial volume
-if (volumeSlider && audioElement) {
-    audioElement.volume = volumeSlider.value / 100;
-}
-
-// Function to set stream URL
-function setStreamUrl(streamUrl) {
-    if (audioElement) {
-        audioElement.src = streamUrl;
-        audioElement.load();
+    if (titleEl) {
+        titleEl.textContent = title;
     }
-
-    console.log('Stream URL set to:', streamUrl);
-}
-
-// Function to update stream status
-function updateStreamStatus(status) {
-    const statusEl = document.querySelector('.stream-status');
-    if (statusEl) {
-        // Update status - you can modify this based on your needs
-        console.log('Stream status:', status);
+    if (subtitleEl) {
+        subtitleEl.textContent = subtitle;
     }
 }
 
 // Initialize player on page load
 document.addEventListener('DOMContentLoaded', function() {
     initializePlayer();
-    
-    // Optional: Auto-update now playing text with current time
+
+    if (playBtn) {
+        playBtn.addEventListener('click', function() {
+            if (isLoading) {
+                return;
+            }
+
+            if (isPlaying) {
+                pauseStream();
+            } else {
+                playStream();
+            }
+        });
+    }
+
+    if (volumeSlider) {
+        volumeSlider.addEventListener('input', function() {
+            if (audioElement) {
+                audioElement.volume = this.value / 100;
+            }
+        });
+
+        if (audioElement) {
+            audioElement.volume = volumeSlider.value / 100;
+        }
+    }
+
     setInterval(function() {
         if (isPlaying) {
             const now = new Date();
-            const timeStr = now.toLocaleTimeString('en-US', { 
-                hour: '2-digit', 
+            const timeStr = now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
                 minute: '2-digit',
-                hour12: true 
+                hour12: true
             });
-            document.getElementById('programTime').textContent = 'Now streaming - ' + timeStr;
+            const programTimeEl = document.getElementById('programTime');
+            if (programTimeEl) {
+                programTimeEl.textContent = 'Now streaming - ' + timeStr;
+            }
         }
     }, 1000);
 });
@@ -140,7 +209,7 @@ const navbar = document.querySelector('.navbar');
 
 window.addEventListener('scroll', () => {
     const currentScrollY = window.scrollY;
-    
+
     if (currentScrollY > 100) {
         if (currentScrollY > lastScrollY) {
             if (!isScrollingDown) {
@@ -157,7 +226,7 @@ window.addEventListener('scroll', () => {
         navbar.classList.remove('navbar-hidden');
         isScrollingDown = false;
     }
-    
+
     lastScrollY = currentScrollY;
 }, { passive: true });
 
