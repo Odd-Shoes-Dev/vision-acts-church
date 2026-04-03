@@ -897,6 +897,7 @@ p {
         display: flex;
         flex-direction: row;
         overflow-x: auto;
+        overflow-y: hidden;
         gap: 1.5rem;
         scroll-snap-type: x mandatory;
         scroll-behavior: smooth;
