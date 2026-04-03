@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio - Vision of Acts Pentecostal Church</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .radio-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .radio-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .radio-header h1 {
+            color: var(--primary-blue);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .radio-header p {
+            color: var(--medium-gray);
+            font-size: 1.1rem;
+        }
+
+        .radio-player {
+            background: linear-gradient(135deg, #0044CC 0%, #003399 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 68, 204, 0.2);
+            color: white;
+        }
+
+        .station-info {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .station-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .station-tagline {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .live-badge {
+            display: inline-block;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .play-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            color: #0044CC;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .play-btn.playing {
+            animation: pulse-btn 1.5s infinite;
+        }
+
+        @keyframes pulse-btn {
+            0% { box-shadow: 0 5px 20px rgba(255, 255, 255, 0.4); }
+            50% { box-shadow: 0 5px 30px rgba(255, 255, 255, 0.6); }
+            100% { box-shadow: 0 5px 20px rgba(255, 255, 255, 0.4); }
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+        }
+
+        .volume-control i {
+            font-size: 1.2rem;
+        }
+
+        .volume-slider {
+            width: 100px;
+            height: 5px;
+            cursor: pointer;
+            accent-color: white;
+        }
+
+        .now-playing {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .now-playing-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .now-playing-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .program-time {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .radio-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .info-card {
+            background: var(--light-gray);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .info-card i {
+            font-size: 2rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .info-card h3 {
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-card p {
+            color: var(--medium-gray);
+            margin: 0;
+        }
+
+        .stream-status {
+            background: rgba(0, 68, 204, 0.05);
+            border: 2px solid var(--primary-blue);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .stream-status h3 {
+            color: var(--primary-blue);
+            margin-top: 0;
+        }
+
+        .stream-status p {
+            color: var(--medium-gray);
+            margin: 0.5rem 0;
+        }
+
+        .stream-url {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 0.75rem;
+            border-radius: 6px;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #666;
+            margin: 1rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .radio-container {
+                padding: 20px 10px;
+            }
+
+            .radio-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .radio-player {
+                padding: 1.5rem;
+            }
+
+            .play-btn {
+                width: 65px;
+                height: 65px;
+                font-size: 1.5rem;
+            }
+
+            .volume-slider {
+                width: 70px;
+            }
+
+            .radio-info {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .radio-container {
+                padding: 15px 10px;
+            }
+
+            .radio-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .station-name {
+                font-size: 1.3rem;
+            }
+
+            .play-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 1.3rem;
+            }
+
+            .player-controls {
+                gap: 1rem;
+            }
+
+            .volume-control {
+                padding: 0.5rem 1rem;
+            }
+
+            .volume-slider {
+                width: 60px;
+            }
+        }
+    </style>
+</head>
+<body class="has-mobile-bottom-nav">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="public/images/logo.png" alt="Vision of Acts Logo" class="logo">
+                <div class="brand-text">
+                    <h1>VISION OF ACTS</h1>
+                    <p class="tagline">Pentecostal Church</p>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#vision">Vision</a></li>
+                <li><a href="index.html#mission">Mission</a></li>
+                <li><a href="index.html#leadership">Leadership</a></li>
+                <li><a href="bible.html">Bible</a></li>
+                <li><a href="radio.html">Radio</a></li>
+                <li><a href="giving-payment.html">Giving</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Radio Player -->
+    <div class="radio-container">
+        <div class="radio-header">
+            <h1>Church Radio</h1>
+            <p>Listen to our sermons, music, and ministry anytime</p>
+        </div>
+
+        <div class="radio-player">
+            <div class="station-info">
+                <div class="station-name">Vision of Acts FM</div>
+                <div class="station-tagline">Spreading God's Word 24/7</div>
+                <div class="live-badge">
+                    <i class="fas fa-circle" style="font-size: 0.6rem; margin-right: 0.5rem;"></i>
+                    LIVE ON AIR
+                </div>
+            </div>
+
+            <div class="player-controls">
+                <button class="play-btn" id="playBtn" title="Play / Pause">
+                    <i class="fas fa-play"></i>
+                </button>
+                <div class="volume-control">
+                    <i class="fas fa-volume-low"></i>
+                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="70">
+                    <i class="fas fa-volume-high"></i>
+                </div>
+            </div>
+
+            <div class="now-playing">
+                <div class="now-playing-label">Now Playing</div>
+                <div class="now-playing-text" id="nowPlayingText">Gospel Africa Radio Ready</div>
+                <div class="program-time" id="programTime">Click play to start live stream</div>
+            </div>
+        </div>
+
+        <div class="radio-info">
+            <div class="info-card">
+                <i class="fas fa-clock"></i>
+                <h3>24/7 Broadcasting</h3>
+                <p>Sermons, music, and ministry content available round the clock</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Mobile Friendly</h3>
+                <p>Listen on any device - phones, tablets, computers, and more</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-headphones"></i>
+                <h3>Easy Listening</h3>
+                <p>High-quality streaming with simple, intuitive controls</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <img src="public/images/logo.png" alt="Vision of Acts Logo" class="footer-logo">
+                    <h4>VISION OF ACTS</h4>
+                    <p>Pentecostal Church</p>
+                    <p>Equipping God's people for authentic relationship with Him</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html#vision">Vision</a></li>
+                        <li><a href="index.html#mission">Mission</a></li>
+                        <li><a href="index.html#leadership">Leadership</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/share/1HmNRqcTzq/?mibextid=wwXIfr" target="_blank">Facebook</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Vision of Acts Pentecostal Church. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="hero-bottom-nav">
+        <a href="bible.html" class="bottom-nav-item" title="Read the Bible">
+            <i class="fas fa-book"></i>
+            <span>Bible</span>
+        </a>
+        <a href="radio.html" class="bottom-nav-item" title="Listen to Radio">
+            <i class="fas fa-radio"></i>
+            <span>Radio</span>
+        </a>
+        <a href="index.html#giving" class="bottom-nav-item" title="Give to the Ministry">
+            <i class="fas fa-hand-holding-heart"></i>
+            <span>Offertory</span>
+        </a>
+    </div>
+
+    <script src="radio-player.js"></script>
+</body>
+</html>
